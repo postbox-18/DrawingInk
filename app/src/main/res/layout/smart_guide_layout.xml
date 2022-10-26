@@ -1,0 +1,55 @@
+<com.example.drawingink.UIReferenceImplementation.SmartGuideView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/smart_guide_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/smart_guide_bottom_border"
+    android:minHeight="48dp"
+    android:orientation="horizontal"
+    android:visibility="invisible"
+    tools:layout_marginEnd="24dp"
+    tools:layout_marginStart="24dp"
+    tools:layout_marginTop="48dp"
+    tools:layout_width="match_parent"
+    tools:visibility="visible">
+
+    <HorizontalScrollView
+        android:id="@+id/smart_guide_scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/smart_guide_stack_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="left|center"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/smart_guide_horizontal_padding"
+            android:paddingEnd="@dimen/smart_guide_horizontal_padding">
+
+            <TextView
+                android:id="@+id/smart_guide_word_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/word_gray"
+                android:textSize="@dimen/smart_guide_text_size"
+                tools:text="hello world!" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <ImageButton
+        android:id="@+id/smart_guide_more_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="end|center_vertical"
+        android:padding="12dp"
+        android:src="@drawable/ic_smart_guide_more"
+        tools:tint="@color/control_gray" />
+
+</com.example.drawingink.UIReferenceImplementation.SmartGuideView>

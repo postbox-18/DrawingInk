@@ -1,0 +1,213 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/editor_view" />
+
+    <include layout="@layout/smart_guide_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        tools:ignore="RtlSymmetry">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            app:cardBackgroundColor="#F2F8FF"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="3dp"
+            app:contentPadding="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                tools:ignore="RtlSymmetry">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/first"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            app:cardBackgroundColor="#D9D9D9"
+                            app:cardCornerRadius="60dp">
+
+                            <ImageButton
+                                android:id="@+id/undo_button"
+                                android:layout_width="@dimen/image_button_size"
+                                android:layout_height="@dimen/image_button_size"
+                                android:layout_gravity="center"
+                                android:background="?android:selectableItemBackground"
+                                android:padding="@dimen/image_button_padding"
+                                android:src="@drawable/ic_undo"
+                                app:tint="@color/editor_icon_color_undo" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            app:cardBackgroundColor="#D9D9D9"
+                            app:cardCornerRadius="60dp">
+
+                            <ImageButton
+                                android:id="@+id/redo_button"
+                                android:layout_width="@dimen/image_button_size"
+                                android:layout_height="@dimen/image_button_size"
+                                android:layout_gravity="center"
+                                android:background="?android:selectableItemBackground"
+                                android:padding="@dimen/image_button_padding"
+                                android:src="@drawable/ic_redo"
+                                app:tint="@color/editor_icon_color_undo" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            app:cardBackgroundColor="#D9D9D9"
+                            app:cardCornerRadius="60dp">
+
+                            <ImageButton
+                                android:id="@+id/input_mode_forceTouch_button"
+                                android:layout_width="@dimen/image_button_size"
+                                android:layout_height="@dimen/image_button_size"
+                                android:layout_gravity="center"
+                                android:background="?android:selectableItemBackground"
+                                android:padding="@dimen/image_button_padding"
+                                android:src="@drawable/hand_index_thumb"
+                                app:tint="@color/editor_icon_color" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            app:cardBackgroundColor="#D9D9D9"
+                            app:cardCornerRadius="60dp">
+
+                            <ImageButton
+                                android:id="@+id/input_mode_forcePen_button"
+                                android:layout_width="@dimen/image_button_size"
+                                android:layout_height="@dimen/image_button_size"
+                                android:layout_gravity="center"
+                                android:background="?android:selectableItemBackground"
+                                android:padding="@dimen/image_button_padding"
+                                android:src="@drawable/vector__1_"
+                                app:tint="@color/editor_icon_color" />
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            app:cardBackgroundColor="#D9D9D9"
+                            app:cardCornerRadius="60dp">
+
+                            <TextView
+                                android:id="@+id/editText"
+                                android:layout_width="@dimen/image_button_size"
+                                android:layout_height="@dimen/image_button_size"
+                                android:layout_gravity="center"
+                                android:background="?android:selectableItemBackground"
+                                android:gravity="center"
+                                android:padding="@dimen/image_button_padding"
+                                android:text="A"
+                                android:textColor="#000000"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                app:tint="@color/editor_icon_color" />
+                        </androidx.cardview.widget.CardView>
+
+                        <Button
+                            android:id="@+id/input_mode_auto_button"
+                            android:layout_width="@dimen/text_button_width"
+                            android:layout_height="@dimen/text_button_height"
+                            android:background="@drawable/button_background"
+                            android:text="@string/inputMode_auto"
+                            android:textColor="@color/button_text_color"
+                            android:visibility="gone" />
+
+                        <ImageButton
+                            android:id="@+id/camera"
+                            android:layout_width="@dimen/image_button_size"
+                            android:layout_height="@dimen/image_button_size"
+                            android:background="?android:selectableItemBackground"
+                            android:src="@drawable/camera"
+                            app:tint="@color/editor_icon_color" />
+
+                        <ImageButton
+                            android:id="@+id/clear_button"
+                            android:layout_width="@dimen/image_button_size"
+                            android:layout_height="@dimen/image_button_size"
+                            android:background="?android:selectableItemBackground"
+                            android:src="@drawable/ic_delete"
+                            app:tint="@color/editor_icon_color" />
+
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:elevation="0dp"
+                            app:cardBackgroundColor="#C9202E"
+                            app:cardCornerRadius="15dp">
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/menu_convert"
+                                android:layout_width="match_parent"
+                                android:background="@android:color/transparent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#ffff"
+                                android:text="CONVERT"/>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</FrameLayout>
