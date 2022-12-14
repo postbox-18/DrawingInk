@@ -14,16 +14,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.drawingink.UIReferenceImplementation.ConvertList;
 import com.example.drawingink.UIReferenceImplementation.EditorBinding;
 import com.example.drawingink.UIReferenceImplementation.EditorData;
 import com.example.drawingink.UIReferenceImplementation.EditorView;
 import com.example.drawingink.UIReferenceImplementation.FontUtils;
+import com.example.drawingink.UIReferenceImplementation.GetViewModel;
 import com.example.drawingink.UIReferenceImplementation.InputController;
 import com.example.drawingink.UIReferenceImplementation.SmartGuideView;
 import com.example.drawingink.databinding.MainActivityBinding;
 import com.example.drawingink.iink.ErrorActivity;
 import com.example.drawingink.iink.IInkApplication;
+import com.google.gson.GsonBuilder;
 import com.myscript.iink.Configuration;
 import com.myscript.iink.ContentPackage;
 import com.myscript.iink.ContentPart;
@@ -32,10 +36,13 @@ import com.myscript.iink.Editor;
 import com.myscript.iink.EditorError;
 import com.myscript.iink.Engine;
 import com.myscript.iink.IEditorListener;
+import com.myscript.iink.MimeType;
 import com.myscript.iink.Renderer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,15 +57,19 @@ public class MainActivity extends AppCompatActivity {
     private SmartGuideView smartGuideView;
 
     private MainActivityBinding binding;
+    private GetViewModel getViewModel;
+
+    private List<ConvertList> convertList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getViewModel = new ViewModelProvider(this).get(GetViewModel.class);
 
         ErrorActivity.installHandler(this);
 
         engine = IInkApplication.getEngine();
-
+        convertList = new ArrayList<>();
         // configure recognition
         Configuration conf = engine.getConfiguration();
         String confDir = "zip://" + getPackageCodePath() + "!/assets/conf";
@@ -154,15 +165,40 @@ public class MainActivity extends AppCompatActivity {
         binding.inputModeAutoButton.setOnClickListener((v) -> setInputMode(InputController.INPUT_MODE_AUTO));
         binding.undoButton.setOnClickListener((v) -> editor.undo());
         binding.redoButton.setOnClickListener((v) -> editor.redo());
-        binding.clearButton.setOnClickListener((v) -> editor.clear());
+        binding.clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                convertList.clear();
+                editor.clear();
+            }
+        });
+
         binding.menuConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ConversionState[] supportedStates = editor.getSupportedTargetConversionStates(null);
-                if (supportedStates.length > 0)
+
+                if (supportedStates.length > 0) {
                     editor.convert(null, supportedStates[0]);
+
+                    MimeType[] supportedMimeTypes = editor.getSupportedImportMimeTypes(editor.getRootBlock());
+                    // Export a math block to MathML
+                    try {
+                        String result = editor.export_(editor.getRootBlock(), MimeType.TEXT);
+                        Log.d(TAG, "ExportData:" + result);
+                        ConvertList convertList1 = new ConvertList();
+                        convertList1.setText(result);
+                        convertList.add(convertList1);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.e("Contextutal", "text>>190>>convertList>>" + new GsonBuilder().setPrettyPrinting().create().toJson(convertList));
+                }
             }
         });
+
 
         invalidateIconButtons();
     }
