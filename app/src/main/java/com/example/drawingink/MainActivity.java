@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 ConversionState[] supportedStates = editor.getSupportedTargetConversionStates(null);
 
                 if (supportedStates.length > 0) {
-                    editor.convert(null, supportedStates[0]);
+                    //editor.convert(null, supportedStates[0]);
 
                     MimeType[] supportedMimeTypes = editor.getSupportedImportMimeTypes(editor.getRootBlock());
                     // Export a math block to MathML
@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    editor.clear();
 
                     Log.e("Contextutal", "text>>190>>convertList>>" + new GsonBuilder().setPrettyPrinting().create().toJson(convertList));
                 }
