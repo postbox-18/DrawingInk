@@ -3,11 +3,15 @@
 package com.example.drawingink;
 
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Toast;
 
 import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
@@ -15,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.drawingink.UIReferenceImplementation.ConvertList;
 import com.example.drawingink.UIReferenceImplementation.EditorBinding;
@@ -27,6 +33,7 @@ import com.example.drawingink.UIReferenceImplementation.SmartGuideView;
 import com.example.drawingink.databinding.MainActivityBinding;
 import com.example.drawingink.iink.ErrorActivity;
 import com.example.drawingink.iink.IInkApplication;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.GsonBuilder;
 import com.myscript.iink.Configuration;
 import com.myscript.iink.ContentPackage;
@@ -41,8 +48,11 @@ import com.myscript.iink.Renderer;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityBinding binding;
     private GetViewModel getViewModel;
 
+    //bottomSheet
+    private AdapterText adapterText;
+    private RecyclerView recyclerView;
+    private BottomSheetDialog bottomSheetDialog;
     private List<ConvertList> convertList = new ArrayList<>();
 
     @Override
@@ -67,6 +81,21 @@ public class MainActivity extends AppCompatActivity {
         getViewModel = new ViewModelProvider(this).get(GetViewModel.class);
 
         ErrorActivity.installHandler(this);
+
+
+
+
+
+        //bottomsheet
+        bottomSheetDialog=new BottomSheetDialog(MainActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.bottomsheet, null, false);
+        recyclerView=view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setHasFixedSize(true);
+
+        bottomSheetDialog.setCancelable(true);
+        bottomSheetDialog.setContentView(view);
+        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         engine = IInkApplication.getEngine();
         convertList = new ArrayList<>();
@@ -173,6 +202,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (convertList == null || convertList.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    adapterText.notifyDataSetChanged();
+                    bottomSheetDialog.show();
+                }
+
+
+            }
+        });
+
         binding.menuConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,16 +229,26 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         String result = editor.export_(editor.getRootBlock(), MimeType.TEXT);
                         Log.d(TAG, "ExportData:" + result);
+                            String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+
                         ConvertList convertList1 = new ConvertList();
                         convertList1.setText(result);
+                        convertList1.setDate(currentDate);
                         convertList.add(convertList1);
+                        Log.e("Contextutal", "text>>190>>convertList>>" + new GsonBuilder().setPrettyPrinting().create().toJson(convertList));
+
+                        adapterText=new AdapterText(MainActivity.this,convertList);
+                        recyclerView.setAdapter(adapterText);
+                        bottomSheetDialog.show();
+
+
 
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     editor.clear();
 
-                    Log.e("Contextutal", "text>>190>>convertList>>" + new GsonBuilder().setPrettyPrinting().create().toJson(convertList));
                 }
             }
         });
